@@ -10,7 +10,7 @@
 #_______________________________________________________________________
 #
 #-----------------------------------------------------------------------
-#   Copyright 2025, Rebecca Rashkin
+#   Copyright 2026, Rebecca Rashkin
 #   -------------------------------
 #   This code may be copied, redistributed, transformed, or built
 #   upon in any format for educational, non-commercial purposes.
@@ -42,17 +42,24 @@ class ErrorUtils:
 
   ERROR_TYPE: str =\
     f'{ERROR}'\
-    '\n ERROR TYPE:  '
+    '\n ERROR TYPE   : '
 
-  DESC_LABEL              : str = '\n DESCRIPTION: '
+  DESC_LABEL              : str = '\n DESCRIPTION  : '
+  PY_ERR_LABEL            : str = '\n PYTHON ERROR : '
+
   MK_DIR_NO_PARENT_ERR    : str = 'Parent directory not found: '
   FILE_WITH_DIR_NAME_ERR  : str = 'File exists with the same name: '
   WRONG_FILE_TYPE         : str = 'Wrong file type.'
   FILE_DNE                : str = 'File does not exist: '
+  WRONG_TYPE              : str = 'Wrong input type: '
+  INVALID_VALUE           : str = 'Invaid value: '
 
 
   #_____________________________________________________________________
-  def raise_exception_with_desc(err: Exception, desc: str) -> None:
+  def raise_exception_with_desc\
+    ( err: Exception = Exception()
+    , desc: str = ERROR
+    ) -> None:
     """
     Raise exception with descriptive message.
 
@@ -69,9 +76,18 @@ class ErrorUtils:
 
     err_type = type(err)
 
+    py_error: str = ''
+
+    if (err.args):
+      py_error = str(
+        f'\n{ErrorUtils.PY_ERR_LABEL}'
+        f'\n   {err.args[0]}'
+      )
+
     err_msg: str = str(
       f'{ErrorUtils.ERROR_TYPE}{err_type.__name__}'
       f'{ErrorUtils.DESC_LABEL}{desc}'
+      f'{py_error}'
       f'{ErrorUtils.LINE}'
     )
 

@@ -23,46 +23,66 @@
 #   //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\
 #______________________________________________________________________
 #   DESCRIPTION
-#   Tests for list utility functions.
+#   Tests for dictionary utility functions.
 #______________________________________________________________________
 
-from flux_bunny_utils.list_utils import ListUtils
+import pytest
+
+from flux_bunny_utils.dict_utils import DictUtils
+
 
 #_______________________________________________________________________
-def test_split_list_even() -> None:
-
-  test_list: list = [1,2,3,4,5,6]
-
-  list1, list2 = ListUtils.split_list(test_list, 2)
-
-  assert list1 == [1,2,3]
-  assert list2 == [4,5,6]
-
-  return
+class TestConst:
+  """
+  Contains constants used in tests.
+  """
 
 #_______________________________________________________________________
-def test_split_list_odd() -> None:
+def test_rm_key_wrong_type():
 
-  test_list: list = [1, 2, 3, 4, 5, 6, 7, 8]
-
-  list1, list2, list3 = ListUtils.split_list(test_list, 3)
-
-  assert list1 == [1, 2, 3]
-  assert list2 == [4, 5, 6]
-  assert list3 == [7, 8]
-
-  return
+  with pytest.raises(Exception):
+    DictUtils.rm_key(1, 4)
 
 #_______________________________________________________________________
-def test_split_list_n_less_than_elements() -> None:
+def test_rm_key():
 
-  test_list: list = [1, 2]
+  d_in : dict = {'a': [1, 2, 3], 'b': [4, 5, 6], 'c': [7, 8, 9]}
+  d_out: dict = {'a': [1, 2, 3], 'c': [7, 8, 9]}
 
-  list1, list2, list3, list4 = ListUtils.split_list(test_list, 4)
+  d_test: dict = DictUtils.rm_key(d_in, 'b')
 
-  assert list1 == [1]
-  assert list2 == [2]
-  assert list3 == []
-  assert list4 == []
+  assert d_out == d_test
 
-  return
+#_______________________________________________________________________
+def test_get_key_of_max():
+
+  pair_a  : tuple = ('a', [1, 2, 3])
+  pair_b  : tuple = ('b', [4, 5, 6])
+  pair_c  : tuple = ('c', [7, 8, 9])
+  d_in    : dict  = dict([pair_a, pair_b, pair_c])
+
+  pair_max  : tuple = pair_c
+  pair_test : tuple = DictUtils.get_max_tuple(d_in)
+
+  assert pair_test == pair_max
+
+#_______________________________________________________________________
+def test_get_key_of_min():
+
+  pair_a  : tuple = ('a', [1, 2, 3])
+  pair_b  : tuple = ('b', [4, 5, 6])
+  pair_c  : tuple = ('c', [7, 8, 9])
+  d_in    : dict  = dict([pair_a, pair_b, pair_c])
+
+  pair_max  : tuple = pair_a
+  pair_test : tuple = DictUtils.get_min_tuple(d_in)
+
+  assert pair_test == pair_max
+
+#_______________________________________________________________________
+def test_get_key_of_max_min_err():
+  with pytest.raises(Exception):
+    DictUtils.get_max_tuple(1)
+
+  with pytest.raises(Exception):
+    DictUtils.get_min_tuple(1)

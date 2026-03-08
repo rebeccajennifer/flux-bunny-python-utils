@@ -23,92 +23,70 @@
 #   //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\  //\^.^/\\
 #_______________________________________________________________________
 #   DESCRIPTION
-#   String utility functions.
+#   Dictionary utility functions.
 #_______________________________________________________________________
 
 from .error_utils import ErrorUtils
 
-
-#_______________________________________________________________________
-class StringUtils:
+class DictUtils:
 
   #_____________________________________________________________________
-  def int_to_hex6(n: int) -> str:
+  def rm_key(d: dict, key):
     """
-    Converts an integer to a 6-digit hex string.
+    Returns a dictionary containing all items except the one with the
+    given key.
 
     Parameters
-      n : integer to convert
+      d   : Dictionary to filter.
+      key : Key to remove from the returned dictionary.
 
     Returns
-      6-digit hex string representation of the input integer.
-      e.g.
-      255      -> '0000ff'
-      16777215 -> 'ffffff'
-      0        -> '000000'
-      16777216 -> '01000000' (not 6 digits, but 8)
-    """
-    return f'{n:06x}'
-
-  #_____________________________________________________________________
-  def str_hex_to_int(s: str) -> int:
-    """
-    Parameter
-      s : hex integer represented as a string
-
-    Returns
-      int represented by the input string
+      dict : A dictionary with all key-value pairs from `d` except the
+      one matching `key`.
     """
 
     try:
-      if (isinstance(s, str)):
-        return int(s, base=16)
+      return {k: v for k, v in d.items() if k != key}
 
-    except ValueError as error:
-      desc: str = str(
-        f'{ErrorUtils.INVALID_VALUE}'
-        f's = {s}'
-        )
+    except Exception as err:
 
-      ErrorUtils.raise_exception_with_desc(error, desc)
-
+      desc: str       = ErrorUtils.WRONG_TYPE + str(type(d))
+      ErrorUtils.raise_exception_with_desc(err, desc)
 
   #_____________________________________________________________________
-  def bool_to_str(flag: bool, capitalize: bool = False) -> str:
+  def get_max_tuple(d: dict) -> tuple:
     """
-    Prints Boolean string.
+    Returns the key-value pair associated with the largest value in the
+    dictionary.
 
     Parameters
-      flag        : Boolean to print
-      capitalize  : Capitalize first letter
+      d : Dictionary
     """
 
-    out_str: str = ''
+    try:
+      return max(d.items(), key=lambda x: x[1])
 
-    if (flag):
-      out_str = 'true'
-    else:
-      out_str = 'false'
-
-    if (capitalize):
-      out_str = f'{out_str[0].upper()}{out_str[1:len(out_str)]}'
-
-    return out_str
+    except Exception as err:
+      desc: str       = ErrorUtils.WRONG_TYPE + str(type(d))
+      ErrorUtils.raise_exception_with_desc(err, desc)
 
   #_____________________________________________________________________
-  def str_to_bool(s: str) -> bool:
+  def get_min_tuple(d: dict) -> tuple:
     """
-    Returns boolean corresponding with input string. Will return true
-    if string is any capitalization of the word 'true'.
+    Returns the key-value pair associated with the smallest value in the
+    dictionary.
 
     Parameters
-      s : any string, assumption s = {'true', 'True', 'false', 'False'}
-
-    Returns
-      bool corresponding to input string
+      d : Dictionary
     """
 
-    lowercase: str = s.lower()
+    try:
+      return min(d.items(), key=lambda x: x[1])
 
-    return lowercase == 'true' or lowercase == 't'
+    except Exception as err:
+      desc: str       = ErrorUtils.WRONG_TYPE + str(type(d))
+      ErrorUtils.raise_exception_with_desc(err, desc)
+
+
+
 
