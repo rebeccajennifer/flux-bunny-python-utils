@@ -2,6 +2,8 @@
 
 This file documents Python style guidelines I prefer.
 
+## Function Docstrings
+
 ```python
   def function_name(param_0: type, parameter_1: type) -> int:
     """
@@ -26,7 +28,32 @@ This file documents Python style guidelines I prefer.
       Creates directory.
 
     Returns
-      int describing what the output of this function is or what it
+      type describing what the output of this function is or what it
       might be used for
     """
+```
+
+## Naming Conventions
+
+### Variables
+
+Variables use `snake_case` i.e. all letters are lower case with words
+separated by underscores.
+
+```python
+# Good example
+flux_bunny: int = max(arr)
+
+# Bad Examples
+FluxBunny: int = max(arr)
+fluxBunny: int = max(arr)
+```
+
+### Constants
+
+Constants shall be written in `ALL_CAPS` with words separated by
+underscores.
+
+```python
+PI: float = 3.1415926
 ```
